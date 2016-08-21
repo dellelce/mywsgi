@@ -1,0 +1,29 @@
+# -FrontPage-
+
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+
+<Limit GET POST>
+order deny,allow
+deny from all
+allow from all
+</Limit>
+<Limit PUT DELETE>
+order deny,allow
+deny from all
+</Limit>
+
+##### ERROR CODES #####
+
+ErrorDocument 500 "Error 500 - server error"
+ErrorDocument 403 "Error 403 - forbidden"
+ErrorDocument 404 "Error 404 - not found"
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /site.wsgi [L]
+
+
+
+## EOF ##
