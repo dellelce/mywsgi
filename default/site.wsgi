@@ -10,6 +10,8 @@ class localconf(object):
 
  def __init__(self, name="env.json"):
   localpath = p.dirname(p.realpath(__file__))
+  localdir = p.dirname(localpath)
+  sys.path.append(localdir)
   sys.path.append(localpath)
   os.chdir(localpath)
 
