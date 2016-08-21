@@ -42,9 +42,6 @@ class localconf(object):
 
 
 conf = localconf()
-
 application = conf.application()
-
-
 
 ## EOF ##
