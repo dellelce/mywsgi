@@ -1,0 +1,6 @@
+# vim:syntax=apache
+# global rewrite rule for domain
+# and then on the same path as site.wsgi another .htaccess (see local-htaccess.txt)
+
+RewriteCond %{HTTP_HOST} domain\.tld [NC]
+RewriteRule ^(.*)$ path/to/site.wsgi/$1 [L]
