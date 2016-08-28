@@ -32,18 +32,18 @@ class localconf(object):
  def application(self):
   '''return a WSGI application'''
 
-  # let's use a castom DJNGO_SETTINGS_MODULE for every environment
+  # let's use a custom DJNGO_SETTINGS_MODULE for every environment
   self.id=self.id_generator()
   self.envvar = "DJANGO_SETTINGS_MODULE_" + self.id
 
+  # sanity checks
   mode = os.stat(self.env).st_mode
-
   if (S_ISDIR(mode)):
    site.addsitedir(self.env)
 
   settings = self.settings
 
-  # this to be done only after environment is setup correctly
+  # this is to be done only after environment is setup correctly
   from django.core.wsgi import get_wsgi_application
   from django import conf as conf
   
