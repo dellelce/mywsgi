@@ -18,12 +18,22 @@ class localconf(object):
   os.chdir(localpath)
 
   f = open(name)
-
   j = json.load(f)
 
   self.name = j["name"]
   self.settings = j["settings"]
   self.env = j["env"]
+
+  mode = os.stat(self.env).st_mode
+
+  if (S_ISDIR(mode)):
+   site.addsitedir(self.env)
+
+  try:
+   from setproctitle import getproctitle, setproctitle
+   setproctitle('wsgi:' + self.name)
+  except:
+   pass
 
  def id_generator(self, size=6, chars=string.ascii_uppercase + string.digits):
   return ''.join(random.choice(chars) for _ in range(size))
@@ -32,14 +42,9 @@ class localconf(object):
  def application(self):
   '''return a WSGI application'''
 
-  # let's use a custom DJNGO_SETTINGS_MODULE for every environment
+  # let's use a castom DJNGO_SETTINGS_MODULE for every environment
   self.id=self.id_generator()
   self.envvar = "DJANGO_SETTINGS_MODULE_" + self.id
-
-  # sanity checks
-  mode = os.stat(self.env).st_mode
-  if (S_ISDIR(mode)):
-   site.addsitedir(self.env)
 
   settings = self.settings
 
