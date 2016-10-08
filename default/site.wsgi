@@ -42,7 +42,7 @@ class localconf(object):
  def application(self):
   '''return a WSGI application'''
 
-  # let's use a castom DJNGO_SETTINGS_MODULE for every environment
+  # let's use a custom DJNGO_SETTINGS_MODULE for every environment
   self.id=self.id_generator()
   self.envvar = "DJANGO_SETTINGS_MODULE_" + self.id
 
