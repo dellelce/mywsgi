@@ -64,18 +64,20 @@ class localconf(object):
   conf.ENVIRONMENT_VARIABLE = self.envvar # used by django/conf/__init__.py
   os.environ.setdefault(self.envvar, settings)
 
+  return get_wsgi_application()
+
  ##
  def application(self):
   '''return a WSGI application object'''
 
   if self.framework is None or self.framework == 'django':
-   self.django()
-   application = get_wsgi_application()
+   return self.django()
 
   if self.framework == 'flask':
    return self.flask()
 
-  return application
+  # Unknown framework?
+  return None
 
 
 # "main"
