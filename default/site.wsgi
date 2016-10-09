@@ -38,11 +38,8 @@ class localconf(object):
  def id_generator(self, size=6, chars=string.ascii_uppercase + string.digits):
   return ''.join(random.choice(chars) for _ in range(size))
 
- ##
- def application(self):
-  '''return a WSGI application'''
-
-  # let's use a custom DJNGO_SETTINGS_MODULE for every environment
+ def django(self):
+  # let's use a custom DJANGO_SETTINGS_MODULE for every environment
   self.id=self.id_generator()
   self.envvar = "DJANGO_SETTINGS_MODULE_" + self.id
 
@@ -54,6 +51,12 @@ class localconf(object):
   
   conf.ENVIRONMENT_VARIABLE = self.envvar # used by django/conf/__init__.py
   os.environ.setdefault(self.envvar, settings)
+
+ ##
+ def application(self):
+  '''return a WSGI application'''
+
+  self.django()
   application = get_wsgi_application()
 
   return application
