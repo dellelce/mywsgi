@@ -20,9 +20,10 @@ class localconf(object):
   f = open(name)
   j = json.load(f)
 
-  self.name = j["name"]
-  self.settings = j["settings"]
-  self.env = j["env"]
+  self.name = j.get("name")
+  self.settings = j.get("settings")
+  self.env = j.get("env")
+  self.framework = j.get("framework")
 
   mode = os.stat(self.env).st_mode
 
@@ -54,10 +55,11 @@ class localconf(object):
 
  ##
  def application(self):
-  '''return a WSGI application'''
+  '''return a WSGI application object'''
 
-  self.django()
-  application = get_wsgi_application()
+  if self.framework is None or self.framework == 'django':
+   self.django()
+   application = get_wsgi_application()
 
   return application
 
