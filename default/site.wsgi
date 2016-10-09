@@ -24,6 +24,7 @@ class localconf(object):
   self.settings = j.get("settings")
   self.env = j.get("env")
   self.framework = j.get("framework")
+  self.importname = j.get("importname")
 
   mode = os.stat(self.env).st_mode
 
@@ -39,7 +40,17 @@ class localconf(object):
  def id_generator(self, size=6, chars=string.ascii_uppercase + string.digits):
   return ''.join(random.choice(chars) for _ in range(size))
 
+ def flask(self):
+  '''set up specific to Flask only'''
+
+  imp = 'from {} import app'.format(self.importname)
+  exec(imp)
+  l=locals()
+  return l['app']
+
  def django(self):
+  '''set up specific to Django only'''
+
   # let's use a custom DJANGO_SETTINGS_MODULE for every environment
   self.id=self.id_generator()
   self.envvar = "DJANGO_SETTINGS_MODULE_" + self.id
@@ -60,6 +71,9 @@ class localconf(object):
   if self.framework is None or self.framework == 'django':
    self.django()
    application = get_wsgi_application()
+
+  if self.framework == 'flask':
+   return self.flask()
 
   return application
 
