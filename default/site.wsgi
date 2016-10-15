@@ -13,8 +13,14 @@ class localconf(object):
  def __init__(self, name="env.json"):
   localpath = p.dirname(p.realpath(__file__))
   localdir = p.dirname(localpath)
-  sys.path.append(localdir)
-  sys.path.append(localpath)
+
+  # checks - add only not already in the path!
+  if localdir not in sys.path:
+   sys.path.append(localdir)
+
+  if localpath not in sys.path:
+   sys.path.append(localpath)
+
   os.chdir(localpath)
 
   f = open(name)
